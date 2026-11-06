@@ -33,6 +33,11 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
+if gh release view "v$VERSION" --repo "$REPO" > /dev/null 2>&1; then
+    echo "v$VERSION is already released, add a new CHANGELOG.md section first"
+    exit 1
+fi
+
 echo "=== Building ClaudeMeter $VERSION (build $BUILD_NUMBER) ==="
 # keychain-access-groups needs a provisioning profile, so ad-hoc builds leave the entitlements out
 xcodebuild clean build \
@@ -40,6 +45,7 @@ xcodebuild clean build \
     -project ClaudeMeter.xcodeproj \
     -scheme ClaudeMeter \
     -configuration Release \
+    -destination "generic/platform=macOS" \
     -derivedDataPath "$BUILD_DIR" \
     ARCHS="arm64 x86_64" \
     ONLY_ACTIVE_ARCH=NO \
