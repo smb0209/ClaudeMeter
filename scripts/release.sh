@@ -41,7 +41,8 @@ xcodebuild clean build \
     -scheme ClaudeMeter \
     -configuration Release \
     -derivedDataPath "$BUILD_DIR" \
-    -arch x86_64 -arch arm64 \
+    ARCHS="arm64 x86_64" \
+    ONLY_ACTIVE_ARCH=NO \
     MARKETING_VERSION="$VERSION" \
     CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
     CODE_SIGN_STYLE=Manual \
